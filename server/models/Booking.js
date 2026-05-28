@@ -17,15 +17,14 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
 
-    time: {
+    startTime: {
       type: String,
       required: true,
     },
 
-    status: {
+    endTime: {
       type: String,
-      enum: ["pending", "approved", "rejected"],
-      default: "pending",
+      required: true,
     },
   },
   {

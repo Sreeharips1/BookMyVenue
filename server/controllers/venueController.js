@@ -1,4 +1,5 @@
 const Venue = require("../models/Venue");
+const Booking = require("../models/Booking");
 
 const createVenue = async (req, res) => {
   try {
@@ -106,10 +107,52 @@ const deleteVenue = async (req, res) => {
   }
 };
 
+const getBookedSlots = async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    const venue = await Venue.findById(req.params.id);
+
+    if (!venue) {
+      return res.status(404).json({
+        message: "Venue not found",
+      });
+    }
+
+    const bookings = await Booking.find({
+      venue: req.params.id,
+      date,
+    });
+
+    const slots = venue.availableSlots.map((slot) => {
+      const isBooked = bookings.some(
+        (booking) =>
+          booking.startTime === slot.startTime &&
+          booking.endTime === slot.endTime,
+      );
+
+      return {
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+        isBooked,
+      };
+    });
+
+    res.status(200).json({
+      slots,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createVenue,
   getVenues,
   getVenueById,
   updateVenue,
   deleteVenue,
+  getBookedSlots,
 };

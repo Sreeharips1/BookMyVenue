@@ -21,6 +21,18 @@ const venueSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    bookingTypes: {
+      type: String,
+      enum: ["hourly", "half-day", "full-day"],
+      default: "hourly",
+    },
+
+    availableSlots: [
+      {
+        startTime: String,
+        endTime: String,
+      },
+    ],
 
     price: {
       type: Number,

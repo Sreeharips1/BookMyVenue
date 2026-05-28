@@ -10,6 +10,8 @@ const testRoutes = require("./routes/testRoutes");
 
 const venueRoutes = require("./routes/venueRoutes");
 
+const bookRoutes = require("./routes/bookingRoutes");
+
 const app = express();
 
 connectDB();
@@ -23,6 +25,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/venues", venueRoutes);
+app.use("/api/book", bookRoutes);
 //testing
 
 app.use("/api/test", testRoutes);
