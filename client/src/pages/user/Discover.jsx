@@ -22,7 +22,9 @@ const Discover = () => {
   const dispatch = useDispatch();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [maxPrice, setMaxPrice] = useState(1000000);
 
@@ -33,9 +35,10 @@ const Discover = () => {
       try {
         dispatch(setVenueLoading(true));
 
-        const data = await getAllVenuesApi();
+        const data = await getAllVenuesApi(page);
 
-        dispatch(setVenues(data));
+        dispatch(setVenues(data.venues));
+        setTotalPages(data.totalPages);
 
         dispatch(setVenueLoading(false));
       } catch (error) {
@@ -44,7 +47,7 @@ const Discover = () => {
     };
 
     fetchVenues();
-  }, []);
+  }, [page]);
 
   const filteredVenues = venues.filter((venue) => {
     const matchesSearch =
@@ -107,6 +110,27 @@ const Discover = () => {
               />
             </div>
           ))}
+        </div>
+        <div className="flex justify-center items-center gap-4 mt-10">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((prev) => prev - 1)}
+            className="px-4 py-2 rounded-lg bg-[#CE2626] disabled:opacity-40"
+          >
+            Previous
+          </button>
+
+          <span className="text-white">
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((prev) => prev + 1)}
+            className="px-4 py-2 rounded-lg bg-[#CE2626] disabled:opacity-40"
+          >
+            Next
+          </button>
         </div>
         {filteredVenues.length === 0 && (
           <div className="text-center text-slate-400 py-10">

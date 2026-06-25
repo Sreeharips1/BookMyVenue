@@ -1,10 +1,5 @@
 import axiosInstance from "../../api/axios";
 
-export const getAllVenuesApi = async () => {
-  const response = await axiosInstance.get("/venues");
-  return response.data;
-};
-
 export const getVenueByIdApi = async (id) => {
   const response = await axiosInstance.get(`/venues/${id}`);
 
@@ -17,8 +12,10 @@ export const createVenueApi = async (venueData) => {
   return response.data;
 };
 
-export const getMyVenuesApi = async () => {
-  const response = await axiosInstance.get("/venues/my-venues");
+export const getAllVenuesApi = async (page = 1, limit = 9) => {
+  const response = await axiosInstance.get(
+    `/venues?page=${page}&limit=${limit}`,
+  );
 
   return response.data;
 };
@@ -31,6 +28,11 @@ export const deleteVenueApi = async (id) => {
 
 export const updateVenuesApi = async (id, venueData) => {
   const response = await axiosInstance.put(`/venues/${id}`, venueData);
+  return response.data;
+};
+
+export const getMyVenuesApi = async () => {
+  const response = await axiosInstance.get("/venues/my-venues");
   return response.data;
 };
 

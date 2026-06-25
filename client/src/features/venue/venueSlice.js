@@ -4,6 +4,8 @@ const initialState = {
   venues: [],
   loading: false,
   error: null,
+  page: 1,
+  totalPages: 1,
 };
 
 const venueSlice = createSlice({

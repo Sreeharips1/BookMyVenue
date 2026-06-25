@@ -22,9 +22,25 @@ const createVenue = async (req, res) => {
 
 const getVenues = async (req, res) => {
   try {
-    const venues = await Venue.find().populate("owner", "name email");
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 9;
 
-    res.status(200).json(venues);
+    const skip = (page - 1) * limit;
+
+    const totalVenues = await Venue.countDocuments();
+
+    const venues = await Venue.find()
+      .populate("owner", "name email")
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      venues,
+      currentPage: page,
+      totalPages: Math.ceil(totalVenues / limit),
+      totalVenues,
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,

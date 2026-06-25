@@ -13,6 +13,8 @@ import { getAllVenuesApi } from "../features/venue/venueApi";
 
 const Home = () => {
   const [venues, setVenues] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
@@ -24,8 +26,9 @@ const Home = () => {
   useEffect(() => {
     const fetchVenues = async () => {
       try {
-        const data = await getAllVenuesApi();
-        setVenues(data);
+        const data = await getAllVenuesApi(page);
+        setVenues(data.venues);
+        setTotalPages(data.totalPages);
       } catch (error) {
         console.error(error);
       } finally {
@@ -34,7 +37,7 @@ const Home = () => {
     };
 
     fetchVenues();
-  }, []);
+  }, [page]);
 
   const filteredVenues = useMemo(() => {
     return venues.filter((venue) => {
@@ -91,6 +94,27 @@ const Home = () => {
             onVenueClick={(venue) => navigate(`/venue/${venue._id}`)}
           />
         )}
+        <div className="flex justify-center items-center gap-4 mt-10">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((prev) => prev - 1)}
+            className="px-4 py-2 rounded-lg bg-[#13203D] disabled:opacity-40"
+          >
+            Previous
+          </button>
+
+          <span className="text-white">
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((prev) => prev + 1)}
+            className="px-4 py-2 rounded-lg bg-[#CE2626] disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
       </section>
     </PublicLayout>
   );
