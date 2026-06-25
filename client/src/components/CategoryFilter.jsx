@@ -1,31 +1,75 @@
+import {
+  Building,
+  Building2,
+  Landmark,
+  Trees,
+  UtensilsCrossed,
+  Volleyball,
+  PartyPopper,
+  Theater,
+} from "lucide-react";
+
+import CategoryChip from "./CategoryChip";
+
 const categories = [
-  "All",
-  "Banquet Hall",
-  "Conference Hall",
-  "Sports",
-  "Rooftop",
-  "Restaurant",
-  "Auditorium",
-  "Party Hall",
-  "Wedding Venue",
+  {
+    label: "All",
+    value: "all",
+    icon: Building,
+  },
+  {
+    label: "Banquet Hall",
+    value: "banquet hall",
+    icon: Landmark,
+  },
+  {
+    label: "Conference Hall",
+    value: "conference hall",
+    icon: Building2,
+  },
+  {
+    label: "Sports",
+    value: "sports",
+    icon: Volleyball,
+  },
+  {
+    label: "Rooftop",
+    value: "rooftop",
+    icon: Trees,
+  },
+  {
+    label: "Restaurant",
+    value: "restaurant",
+    icon: UtensilsCrossed,
+  },
+  {
+    label: "Auditorium",
+    value: "auditorium",
+    icon: Theater,
+  },
+  {
+    label: "Party Hall",
+    value: "party hall",
+    icon: PartyPopper,
+  },
+  {
+    label: "Wedding Venue",
+    value: "wedding venue",
+    icon: Landmark,
+  },
 ];
 
 const CategoryFilter = ({ selectedCategory, setSelectedCategory }) => {
   return (
-    <div className="flex gap-3 flex-wrap">
+    <div className="flex flex-wrap gap-3 mt-6">
       {categories.map((category) => (
-        <button
-          key={category}
-          value={category}
-          className={`px-5 py-2 rounded-full border transition ${
-            selectedCategory === category
-              ? "bg-[#CE2626] border-[#CE2626] text-white"
-              : "border-slate-700 text-white hover:bg-[#CE2626]"
-          }`}
-          onClick={() => setSelectedCategory(category)}
-        >
-          {category}
-        </button>
+        <CategoryChip
+          key={category.value}
+          Icon={category.icon}
+          label={category.label}
+          active={selectedCategory === category.value}
+          onClick={() => setSelectedCategory(category.value)}
+        />
       ))}
     </div>
   );

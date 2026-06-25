@@ -52,8 +52,8 @@ const Discover = () => {
       venue.location.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesCategory =
-      selectedCategory === "All" ||
-      venue.category === selectedCategory ||
+      selectedCategory === "all" ||
+      venue.category?.toLowerCase() === selectedCategory ||
       venue.type === selectedCategory;
 
     const matchesPrice = venue.price <= maxPrice;

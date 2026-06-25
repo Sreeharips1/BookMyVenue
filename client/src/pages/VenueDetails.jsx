@@ -13,6 +13,8 @@ import { createBooking } from "../features/booking/bookingApi";
 
 import { formatTime } from "../utils/formatTime";
 
+import LoginRequiredModal from "../components/LoginRequiredModal";
+
 const VenueDetails = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -47,6 +49,11 @@ const VenueDetails = () => {
         return alert("Please select a slot");
       }
 
+      if (!user) {
+        setShowLoginModal(true);
+        return;
+      }
+
       const [startTime, endTime] = selectedSlot
         .split("-")
         .map((item) => item.trim());
@@ -69,6 +76,10 @@ const VenueDetails = () => {
   };
 
   const [venue, setvenue] = useState(null);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchVenue = async () => {
@@ -169,6 +180,10 @@ duration-300 ${
             selectedSlot={selectedSlot}
             price={venue.price}
             onBook={handleBooking}
+          />
+          <LoginRequiredModal
+            isOpen={showLoginModal}
+            onClose={() => setShowLoginModal(false)}
           />
         </div>
       </MainLayout>

@@ -59,6 +59,8 @@ const AppRoutes = () => {
 
         <Route path="/user/discover" element={<Discover />} />
 
+        <Route path="/discover" element={<Discover />} />
+
         {/* OWNER */}
         <Route
           path="/owner/dashboard"
