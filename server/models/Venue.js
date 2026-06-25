@@ -17,7 +17,7 @@ const venueSchema = new mongoose.Schema(
       required: true,
     },
 
-    type: {
+    category: {
       type: String,
       required: true,
     },
@@ -50,9 +50,11 @@ const venueSchema = new mongoose.Schema(
       },
     ],
 
-    image: {
-      type: String,
-    },
+    images: [
+      {
+        type: String,
+      },
+    ],
 
     owner: {
       type: mongoose.Schema.Types.ObjectId,

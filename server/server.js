@@ -12,6 +12,10 @@ const venueRoutes = require("./routes/venueRoutes");
 
 const bookRoutes = require("./routes/bookingRoutes");
 
+const dashboardRoutes = require("./routes/dashboardRoutes");
+
+const uploadRoutes = require("./routes/uploadRoutes");
+
 const app = express();
 
 connectDB();
@@ -26,6 +30,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/venues", venueRoutes);
 app.use("/api/book", bookRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/upload", uploadRoutes);
 //testing
 
 app.use("/api/test", testRoutes);

@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "owner"],
       default: "user",
     },
+    mobile: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,

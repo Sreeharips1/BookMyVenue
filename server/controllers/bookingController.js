@@ -13,12 +13,44 @@ const createBooking = async (req, res) => {
       });
     }
 
+    const today = new Date().toISOString().split("T")[0];
+
+    if (date < today) {
+      return res.status(400).json({
+        message: "Cannot book past dates",
+      });
+    }
+    // if (starttime < currentTime) {
+    //   return res.status(400).json({
+    //     message: "Cannot book past slots",
+    //   });
+    // }
+
+    if (date === today) {
+      const now = new Date();
+
+      const [hour, minute] = startTime.split(":");
+
+      const slotDateTime = new Date();
+
+      slotDateTime.setHours(Number(hour), Number(minute), 0, 0);
+      slotDateTime.setMinutes(Number(minute));
+      slotDateTime.setSeconds(0);
+      slotDateTime.setMilliseconds(0);
+
+      if (slotDateTime < now) {
+        return res.status(400).json({
+          message: "Cannot book past slots",
+        });
+      }
+    }
+
     const validSlot = venueExists.availableSlots.some(
       (slot) => slot.startTime === startTime && slot.endTime === endTime,
     );
 
     if (!validSlot) {
-      return res.satus(400).json({
+      return res.status(400).json({
         message: "Invalid slot selected",
       });
     }
@@ -44,11 +76,15 @@ const createBooking = async (req, res) => {
       endTime,
     });
 
+    console.log("BODY:", req.body);
+    console.log("USER:", req.user);
+
     res.status(201).json({
       message: "Booking confirmed",
       booking,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: error.message,
     });

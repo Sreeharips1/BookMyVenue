@@ -7,11 +7,14 @@ const {
   updateVenue,
   deleteVenue,
   getBookedSlots,
+  getMyVenues,
 } = require("../controllers/venueController");
 
 const { protect, ownerOnly } = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+router.get("/my-venues", protect, ownerOnly, getMyVenues);
 
 router.get("/", getVenues);
 

@@ -3,6 +3,8 @@ const Booking = require("../models/Booking");
 
 const createVenue = async (req, res) => {
   try {
+    console.log("BODY:", req.body);
+    console.log("USER:", req.user);
     const venue = await Venue.create({
       ...req.body,
       owner: req.user._id,
@@ -10,6 +12,8 @@ const createVenue = async (req, res) => {
 
     res.status(201).json(venue);
   } catch (error) {
+    console.log(error.message);
+    console.log(error.errors);
     res.status(500).json({
       message: error.message,
     });
@@ -43,6 +47,7 @@ const getVenueById = async (req, res) => {
 
     res.status(200).json(venue);
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: error.message,
     });
@@ -72,6 +77,20 @@ const updateVenue = async (req, res) => {
     );
 
     res.status(200).json(updatedVenue);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const getMyVenues = async (req, res) => {
+  try {
+    const venues = await Venue.find({
+      owner: req.user._id,
+    });
+
+    res.status(200).json(venues);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -155,4 +174,5 @@ module.exports = {
   updateVenue,
   deleteVenue,
   getBookedSlots,
+  getMyVenues,
 };
